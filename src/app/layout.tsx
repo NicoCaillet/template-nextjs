@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import ReduxProvider from "@/redux/provider";
+import StepperContextProvider from "@/contexts/stepper-context-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Template Nextjs",
-  description: "Esta plantilla es ideal para desarrolladores que desean crear una aplicación web con Next.js.",
+  description:
+    "Esta plantilla es ideal para desarrolladores que desean crear una aplicación web con Next.js.",
 };
 
 export default function RootLayout({
@@ -25,7 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ReduxProvider>{children}</ReduxProvider>
+          <StepperContextProvider> {children} </StepperContextProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -13,29 +13,35 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import texts from "@/messages/en.json";
 import Link from "next/link";
-
-// Redux/toolkit
-import { RootState } from "@/redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  increment,
-  decrement,
-  incrementByAmount,
-} from "@/redux/features/counter/counterSlice";
 
 // Momentjs
 import moment from "moment";
 import LogoNext from "@/components/LogoNext";
+import { useStepperProvider } from "@/lib/hooks";
+import SeleccionPelicula from "@/components/seleccion-pelicula";
+import SeleccionPrecios from "@/components/seleccion-precio";
+import SeleccionEntrada from "@/components/seleccion-entrada";
+import Resumen from "@/components/resumen";
 
 const AppComponent = () => {
   const { setTheme, theme } = useTheme();
+  const { step, handleNextValue, handlePrevValue } = useStepperProvider();
 
-  const text = texts.layout.home;
-
-  const count = useSelector((state: RootState) => state.counter.value);
-  const dispatch = useDispatch();
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return <SeleccionPelicula />;
+      case 2:
+        return <SeleccionPrecios />;
+      case 3:
+        return <SeleccionEntrada />;
+      case 4:
+        return <Resumen />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <main className="w-full h-screen overflow-hidden">
@@ -102,47 +108,31 @@ const AppComponent = () => {
         </nav>
       </header>
 
-      <div className="w-full h-full container mx-auto flex items-center justify-center flex-col gap-1 lg:gap-5">
-        <h1 className="text-4xl lg:text-5xl font-black text-balance text-center">
-          <span>{text.title}</span>
-          <span className="animate-background-shine bg-[linear-gradient(110deg,#000000,45%,#c4c4c4,55%,#000000)] dark:bg-[linear-gradient(110deg,#ffffff,45%,#c8c8c8,55%,#ffffff)] bg-[length:250%_100%] bg-clip-text text-transparent">
-            {text.spanTitle}
+      <div className="m-auto max-w-[1050px] px-4 min-h-screen mx-auto flex items-center justify-center flex-col gap-1 lg:gap-5">
+        <div className="w-full h-[600px] p-10 flex flex-col items-center mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-md border">
+          <span className="flex justify-between p-5 mb-5 w-full">
+            <Button onClick={handlePrevValue} disabled={step <= 1}>
+              &lt;---
+            </Button>
+            <Button onClick={handleNextValue} disabled={step >= 4}>
+              ---&gt;
+            </Button>
           </span>
-        </h1>
-        <div className="flex flex-col gap-2 mt-5">
-          <p className="text-pretty text-center flex items-center flex-col gap-2 lg:flex-row">
-            {text.description}
-            <code className="bg-gray-100 dark:bg-[#282828] px-2 py-0.5 rounded-md text-sm dark:text-gray-300">
-              {text.spanDescription}
-            </code>
-          </p>
-
-          <p className="text-pretty text-center flex items-center flex-col gap-2 lg:flex-row">
-            {text.descriptionTwo}
-          </p>
-        </div>
-        <div className="flex items-center justify-center gap-5 mt-5">
-          <Button variant="secondary" onClick={() => dispatch(decrement())}>
-            -
-          </Button>
-          <span>{count}</span>
-          <Button variant="secondary" onClick={() => dispatch(increment())}>
-            +
-          </Button>
+          {renderStep()}
         </div>
       </div>
 
       <footer className="w-full h-auto fixed bottom-0 left-0 border-b overflow-hidden">
         <div className="w-full h-full container mx-auto flex items-center justify-center px-5 py-3 text-gray-500 text-pretty text-center text-sm">
           <span>
-            © {moment().format("YYYY")} Template Next.js,{" "}
+            © {moment().format("YYYY")} Entraduki.net,{" "}
             <Link
-              href="https://www.linkedin.com/in/nicoschonfeld/"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-gray-800 dark:hover:text-gray-200 transition-all"
             >
-              @nicoschonfeld
+              @nicolascailletbois
             </Link>
           </span>
         </div>
